@@ -1,4 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
+import { ErrorResType } from "../types";
+import { StatisticsCountType } from "../types";
 
 export const API = axios.create({
   // baseURL: "https://universityofschoolscolleges.herokuapp.com",
@@ -16,3 +18,19 @@ API.interceptors.request.use((req: AxiosRequestConfig): AxiosRequestConfig => {
 
   return req;
 });
+
+// type GetStatisticsType = {
+//   counts: StatisticsCountType
+// }
+
+export const GET_STATISTICS_COUNT = async ():Promise<StatisticsCountType | ErrorResType> => {
+  try {
+    const statisticsCount = await API.get<StatisticsCountType>(`/statistics/all-stats-count`)
+
+    return statisticsCount.data
+  } catch (error: any) {
+    const { data, status } = error.response
+
+        return { message: data.message, status }
+  }
+}

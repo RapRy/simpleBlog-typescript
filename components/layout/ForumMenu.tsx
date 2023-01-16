@@ -11,17 +11,24 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
+import List from "@mui/material/List";
 
 import SearchIcon from "@mui/icons-material/Search";
 
 import { useUser } from "../../hooks/useUser";
 
 import { CategoryType } from "../../types/categoryType";
+import { TopicType } from "../../types/topicType";
+import { ErrorResType } from "../../types";
+
+import TopicReuse from "../reusable/topics/TopicReuse";
 
 const drawerWidth = 320;
 
 type DataType = {
   categories: CategoryType[];
+  latest_topics: TopicType[];
+  hot_topics: TopicType[];
 };
 
 type Props = {
@@ -138,7 +145,7 @@ const ForumMenu = ({ data, children }: Props): JSX.Element => {
               Categories
             </Typography>
             {data?.categories &&
-              data.categories.map((item, i) => (
+              data?.categories?.map((item, i) => (
                 <Link key={i} href={item.name.toLowerCase()}>
                   <a
                     style={{
@@ -168,6 +175,88 @@ const ForumMenu = ({ data, children }: Props): JSX.Element => {
                   </a>
                 </Link>
               ))}
+          </Box>
+          {/* latest topic panel */}
+          <Box padding={0} marginTop={2}>
+            <Link href={`/forum/latest-topics`}>
+              <a
+                style={{
+                  textDecoration: "none",
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={(theme) => ({
+                    color: theme.palette.secondary.dark,
+                    fontSize: ".9rem",
+                    fontWeight: theme.typography.fontWeightBold,
+                    textTransform: "uppercase",
+                    marginBottom: theme.spacing(1),
+                  })}
+                >
+                  Latest topics
+                </Typography>
+              </a>
+            </Link>
+            <List
+              sx={(theme) => ({
+                borderRadius: theme.shape.borderRadius,
+                padding: theme.spacing(1),
+                backgroundColor: theme.palette.background.paper,
+              })}
+            >
+              {data?.latest_topics.map((item, i) => (
+                <div key={i}>
+                  <TopicReuse
+                    headerText="latest topics"
+                    type="sm"
+                    categories={data?.categories}
+                    topic={item}
+                  />
+                </div>
+              ))}
+            </List>
+          </Box>
+          {/* hottest topic panel */}
+          <Box padding={0} marginTop={2}>
+            <Link href={`/forum/hot-topics`}>
+              <a
+                style={{
+                  textDecoration: "none",
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={(theme) => ({
+                    color: theme.palette.secondary.dark,
+                    fontSize: ".9rem",
+                    fontWeight: theme.typography.fontWeightBold,
+                    textTransform: "uppercase",
+                    marginBottom: theme.spacing(1),
+                  })}
+                >
+                  Hot topics
+                </Typography>
+              </a>
+            </Link>
+            <List
+              sx={(theme) => ({
+                borderRadius: theme.shape.borderRadius,
+                padding: theme.spacing(1),
+                backgroundColor: theme.palette.background.paper,
+              })}
+            >
+              {data?.hot_topics.map((item, i) => (
+                <div key={i}>
+                  <TopicReuse
+                    headerText="hot topics"
+                    type="sm"
+                    categories={data?.categories}
+                    topic={item}
+                  />
+                </div>
+              ))}
+            </List>
           </Box>
         </Drawer>
       </Box>
