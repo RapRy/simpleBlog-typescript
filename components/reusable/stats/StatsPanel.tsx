@@ -17,7 +17,6 @@ const StatsPanel = ({
 }: {
   counts: StatisticsCountType;
 }): JSX.Element => {
-  console.log(counts);
   return (
     <Container
       sx={(theme) => ({

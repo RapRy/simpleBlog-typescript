@@ -9,13 +9,16 @@ import Container from "@mui/material/Container";
 
 import ForumMenu from "../../components/layout/ForumMenu";
 import StatsPanel from "../../components/reusable/stats/StatsPanel";
+import UsersPanel from "../../components/reusable/users/UsersPanel";
 // types
 import { CategoryType } from "../../types/categoryType";
 import { TopicType } from "../../types/topicType";
+import { UsersType } from "../../types/userType";
 import { StatisticsCountType } from "../../types";
 // api
 import { GET_CATEGORIES } from "../../api/category";
 import { GET_LATEST_TOPICS, GET_HOT_TOPICS } from "../../api/topic";
+import { GET_NEW_USERS, GET_ACTIVE_USERS } from "../../api/user";
 import { GET_STATISTICS_COUNT } from "../../api";
 
 const namePage: NextPage = (props) => {
@@ -29,17 +32,23 @@ const namePage: NextPage = (props) => {
     const latestTopicsRes = await GET_LATEST_TOPICS(5);
     const hotTopicsRes = await GET_HOT_TOPICS(5);
     const statisticsCountRes = await GET_STATISTICS_COUNT();
+    const newUserRes = await GET_NEW_USERS(10);
+    const activeUserRes = await GET_ACTIVE_USERS(10);
 
     const categories = categoriesRes as CategoryType[];
     const latest_topics = latestTopicsRes as TopicType[];
     const hot_topics = hotTopicsRes as TopicType[];
     const statistics_count = statisticsCountRes as StatisticsCountType;
+    const new_users = newUserRes as UsersType[];
+    const active_users = activeUserRes as UsersType[];
 
     return {
       categories,
       latest_topics,
       hot_topics,
       statistics_count,
+      new_users,
+      active_users,
     };
 
     // let categories: CategoryType[] = [];
@@ -57,6 +66,8 @@ const namePage: NextPage = (props) => {
   return (
     <ForumMenu data={data!}>
       <StatsPanel counts={data?.statistics_count!} />
+      <UsersPanel users={data?.new_users!} header="New users" />
+      <UsersPanel users={data?.active_users!} header="Active users" />
       <div>forum</div>
     </ForumMenu>
   );
@@ -74,17 +85,23 @@ export const getServerSideProps: GetServerSideProps = async (
       const latestTopicsRes = await GET_LATEST_TOPICS(5);
       const hotTopicsRes = await GET_HOT_TOPICS(5);
       const statisticsCountRes = await GET_STATISTICS_COUNT();
+      const newUserRes = await GET_NEW_USERS(10);
+      const activeUserRes = await GET_ACTIVE_USERS(10);
 
       const categories = categoriesRes as CategoryType[];
       const latest_topics = latestTopicsRes as TopicType[];
       const hot_topics = hotTopicsRes as TopicType[];
       const statistics_count = statisticsCountRes as StatisticsCountType;
+      const new_users = newUserRes as UsersType[];
+      const active_users = activeUserRes as UsersType[];
 
       return {
         categories,
         latest_topics,
         hot_topics,
         statistics_count,
+        new_users,
+        active_users,
       };
       // const querySnapshot = await getDocs(collection(db, "category"));
 
