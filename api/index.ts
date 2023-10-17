@@ -3,8 +3,8 @@ import { ErrorResType } from "../types";
 import { StatisticsCountType } from "../types";
 
 export const API = axios.create({
-  // baseURL: "https://universityofschoolscolleges.herokuapp.com",
-  baseURL: "http://localhost:5000",
+  baseURL: "https://simple-blog-r440.onrender.com",
+  // baseURL: "http://localhost:5000",
   // headers: { "Content-Type": "application/json" },
 });
 
@@ -23,14 +23,18 @@ API.interceptors.request.use((req: AxiosRequestConfig): AxiosRequestConfig => {
 //   counts: StatisticsCountType
 // }
 
-export const GET_STATISTICS_COUNT = async ():Promise<StatisticsCountType | ErrorResType> => {
+export const GET_STATISTICS_COUNT = async (): Promise<
+  StatisticsCountType | ErrorResType
+> => {
   try {
-    const statisticsCount = await API.get<StatisticsCountType>(`/statistics/all-stats-count`)
+    const statisticsCount = await API.get<StatisticsCountType>(
+      `/statistics/all-stats-count`
+    );
 
-    return statisticsCount.data
+    return statisticsCount.data;
   } catch (error: any) {
-    const { data, status } = error.response
+    const { data, status } = error.response;
 
-        return { message: data.message, status }
+    return { message: data.message, status };
   }
-}
+};
